@@ -868,13 +868,35 @@ button {
     display: none;
   }
 
-  /* Hide other nav actions when search is active on mobile to save space */
-  .nav-actions.search-active > button {
-    display: none;
+  /* Mobile Search Bar Drop-down (Amazon/Flipkart style) */
+  .search-container {
+    position: static;
+  }
+
+  .search-input {
+    position: absolute;
+    top: 72px; /* Directly below navbar */
+    left: 0;
+    width: 100vw !important;
+    height: 60px;
+    background: var(--card-bg);
+    border-radius: 0;
+    border-top: 1px solid var(--card-border);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0 24px !important;
+    font-size: 1.05rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 40;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
   }
 
   .search-container.open .search-input {
-    width: calc(100vw - 160px);
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
   
   .hero-title {

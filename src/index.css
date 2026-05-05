@@ -16,6 +16,7 @@
   --warning: #fbbf24; /* Amber 400 */
   --font-geist: 'Geist', 'DM Sans', sans-serif;
   --nav-bg: rgba(5, 5, 5, 0.75);
+  --pattern-color: rgba(255, 255, 255, 0.03);
 }
 
 body.light-theme {
@@ -30,6 +31,7 @@ body.light-theme {
   --text-muted: #64748b;
   --text-secondary: #475569;
   --nav-bg: rgba(255, 255, 255, 0.75);
+  --pattern-color: rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -40,6 +42,8 @@ body.light-theme {
 
 body {
   background-color: var(--bg);
+  background-image: radial-gradient(var(--pattern-color) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
   color: var(--text-main);
   font-family: var(--font-geist);
   line-height: 1.5;

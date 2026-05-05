@@ -102,6 +102,7 @@ button {
 }
 
 .nav-logo {
+  flex: 1;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -147,7 +148,9 @@ button {
 }
 
 .nav-actions {
+  flex: 1;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 20px;
 }

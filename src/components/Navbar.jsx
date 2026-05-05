@@ -42,7 +42,11 @@ function Navbar({ cartCount, setIsCartOpen, theme, setTheme, setSearchQuery }) {
                 if (e.target.value === '') setIsSearchOpen(false);
               }}
             />
-            <button className="action-btn search-btn" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+            <button 
+              className="action-btn search-btn" 
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => setIsSearchOpen(!isSearchOpen)}
+            >
               <SearchIcon />
             </button>
           </div>

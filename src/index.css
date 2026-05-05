@@ -927,7 +927,7 @@ button {
   position: fixed;
   top: 0; right: -400px;
   width: 400px; height: 100vh;
-  background: var(--bg-main);
+  background: var(--bg);
   border-left: 1px solid var(--card-border);
   z-index: 1001;
   transition: right 0.3s ease;

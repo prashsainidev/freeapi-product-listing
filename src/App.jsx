@@ -32,6 +32,18 @@ function App() {
 
   // Feature 6: Search State
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchQuery !== debouncedSearchQuery) {
+        setDebouncedSearchQuery(searchQuery);
+        setCurrentPage(1); // Reset to page 1 on new search
+        setSelectedCategory('All'); // Reset category filter on new search
+      }
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery, debouncedSearchQuery]);
 
   useEffect(() => {
     document.body.className = theme === 'light' ? 'light-theme' : '';
@@ -48,13 +60,16 @@ function App() {
     setCart(newCart);
   };
 
-  const fetchProducts = async (page = 1) => {
+  const fetchProducts = async (page = 1, query = '') => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch(
-        `https://api.freeapi.app/api/v1/public/randomproducts?page=${page}`
-      );
+      let url = `https://api.freeapi.app/api/v1/public/randomproducts?page=${page}`;
+      if (query) {
+        url += `&query=${encodeURIComponent(query)}`;
+      }
+      
+      const response = await fetch(url);
       const data = await response.json();
       setProducts(data.data.data);
       setMeta(data.data);
@@ -68,7 +83,7 @@ function App() {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    fetchProducts(currentPage);
+    fetchProducts(currentPage, debouncedSearchQuery);
     
     if (isFirstRender.current) {
       isFirstRender.current = false;
@@ -81,13 +96,11 @@ function App() {
       const y = mainContainer.getBoundingClientRect().top + window.scrollY + yOffset;
       window.scrollTo({ top: y, behavior: 'smooth' });
     }
-  }, [currentPage]);
+  }, [currentPage, debouncedSearchQuery]);
 
-  // Apply filters: Category + Search Query
+  // Apply filters: Category only (Search is now handled globally by the API)
   const filteredProducts = products.filter(p => {
-    const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
-    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return selectedCategory === 'All' || p.category === selectedCategory;
   });
 
   return (

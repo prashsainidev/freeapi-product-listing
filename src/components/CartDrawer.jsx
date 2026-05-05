@@ -20,18 +20,32 @@ function CartDrawer({ cart, isCartOpen, setIsCartOpen, removeFromCart }) {
             </div>
           ) : (
             <div className="cart-items">
-              {cart.map((item, idx) => (
-                <div key={idx} className="cart-item">
-                  <div className="cart-item-image">
-                    <img src={item.thumbnail} alt={item.title} />
+              {cart.map((item, idx) => {
+                let safeThumbnail = item.thumbnail;
+                if (safeThumbnail && safeThumbnail.includes('cdn.dummyjson.com/product-images')) {
+                  safeThumbnail = `https://placehold.co/100x100/1a1a1a/a3e635?text=${encodeURIComponent(item.title.split(' ')[0])}`;
+                }
+
+                return (
+                  <div key={idx} className="cart-item">
+                    <div className="cart-item-image">
+                      <img 
+                        src={safeThumbnail} 
+                        alt={item.title} 
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = `https://placehold.co/100x100/1a1a1a/a3e635?text=${encodeURIComponent(item.title.split(' ')[0])}`;
+                        }}
+                      />
+                    </div>
+                    <div className="cart-item-details">
+                      <p className="cart-item-title">{item.title}</p>
+                      <p className="cart-item-price">${item.price}</p>
+                    </div>
+                    <button className="remove-item" onClick={() => removeFromCart(idx)}>✕</button>
                   </div>
-                  <div className="cart-item-details">
-                    <p className="cart-item-title">{item.title}</p>
-                    <p className="cart-item-price">${item.price}</p>
-                  </div>
-                  <button className="remove-item" onClick={() => removeFromCart(idx)}>✕</button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

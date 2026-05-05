@@ -41,6 +41,7 @@ function App() {
   const [error, setError] = useState(null);
   const [meta, setMeta] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const fetchProducts = async (page = 1) => {
     try {
@@ -77,7 +78,7 @@ function App() {
         <div className="nav-container">
           <div className="nav-logo">
             <div className="logo-shape"></div>
-            <span className="logo-text">LUMIÈRE</span>
+            <span className="logo-text">AURA</span>
           </div>
           
           <div className="nav-links">
@@ -160,7 +161,7 @@ function App() {
               // Fix broken dummyjson URLs to prevent 404 console errors and show actual images
               let safeThumbnail = product.thumbnail;
               if (safeThumbnail && safeThumbnail.includes('cdn.dummyjson.com/product-images')) {
-                safeThumbnail = `https://loremflickr.com/400/300/${product.category}?lock=${product.id}`;
+                safeThumbnail = `https://placehold.co/600x400/1a1a1a/a3e635?text=${encodeURIComponent(product.title.split(' ').join('+'))}`;
               }
 
               return (
@@ -176,11 +177,11 @@ function App() {
                       alt={product.title}
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = 'https://placehold.co/600x400/111111/52525b?text=No+Image';
+                        e.target.src = `https://placehold.co/600x400/1a1a1a/a3e635?text=${encodeURIComponent(product.title.split(' ').join('+'))}`;
                       }}
                     />
                     <div className="image-overlay">
-                      <button className="quick-view-btn">Quick View</button>
+                      <button className="quick-view-btn" onClick={() => setSelectedProduct(product)}>Quick View</button>
                     </div>
                   </div>
                   
@@ -259,11 +260,48 @@ function App() {
         <div className="footer-content">
           <div className="footer-brand">
             <div className="logo-shape"></div>
-            <span>LUMIÈRE</span>
+            <span>AURA</span>
           </div>
-          <p className="footer-text">© 2026 Lumière Inc. All rights reserved. Crafted with precision.</p>
+          <p className="footer-text">© 2026 Aura Inc. All rights reserved. Crafted with precision.</p>
         </div>
       </footer>
+
+      {/* Quick View Modal */}
+      {selectedProduct && (
+        <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedProduct(null)}>✕</button>
+            <div className="modal-body">
+              <div className="modal-image">
+                <img 
+                  src={`https://placehold.co/600x400/1a1a1a/a3e635?text=${encodeURIComponent(selectedProduct.title.split(' ').join('+'))}`} 
+                  alt={selectedProduct.title} 
+                />
+              </div>
+              <div className="modal-details">
+                <p className="modal-brand">{selectedProduct.brand || 'Generic'}</p>
+                <h2>{selectedProduct.title}</h2>
+                <div className="rating" style={{ marginBottom: '16px' }}>
+                  <StarIcon />
+                  <span style={{ color: '#fbbf24', fontWeight: 600 }}>{selectedProduct.rating}</span>
+                </div>
+                <p className="modal-desc">{selectedProduct.description}</p>
+                
+                <div className="modal-price">
+                  ${(selectedProduct.price - (selectedProduct.price * selectedProduct.discountPercentage) / 100).toFixed(2)}
+                  <span style={{ fontSize: '1rem', textDecoration: 'line-through', color: '#71717a', marginLeft: '12px' }}>
+                    ${selectedProduct.price}
+                  </span>
+                </div>
+                
+                <button className="hero-cta" style={{ marginTop: '32px', width: '100%' }}>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

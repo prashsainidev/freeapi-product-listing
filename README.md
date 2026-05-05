@@ -45,7 +45,7 @@ Instead of a simple local filter that only searches the 10 items currently on th
 ### 3. Advanced UI/UX Principles
 - **Smart Pagination Scroll:** When a user navigates to the next page, the window automatically smooth-scrolls back to the top of the product catalog. This solves a major UX flaw in amateur websites where the user is left staring at the footer after loading new items.
 - **Intersection Observer:** Integrated the `IntersectionObserver` API to trigger beautiful "scroll reveal" animations as product cards enter the viewport.
-- **Mobile-First Search:** Re-engineered the mobile navbar so that when the search bar expands, other icons dynamically hide themselves, preventing the layout from breaking on small screens.
+- **Enterprise Search UI:** Built an Amazon/Flipkart style search architecture. On desktop, the search bar is a permanently expanded focal point that never causes layout shifts. On mobile, clicking the search icon triggers a full-width drop-down tray, completely eliminating overlapping icon bugs.
 
 ---
 

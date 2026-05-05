@@ -30,6 +30,9 @@ function App() {
   // Feature 5: Theme State
   const [theme, setTheme] = useState('dark');
 
+  // Feature 6: Search State
+  const [searchQuery, setSearchQuery] = useState('');
+
   useEffect(() => {
     document.body.className = theme === 'light' ? 'light-theme' : '';
   }, [theme]);
@@ -80,9 +83,22 @@ function App() {
     }
   }, [currentPage]);
 
+  // Apply filters: Category + Search Query
+  const filteredProducts = products.filter(p => {
+    const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
+    const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
   return (
     <div className="app-wrapper">
-      <Navbar cartCount={cart.length} setIsCartOpen={setIsCartOpen} theme={theme} setTheme={setTheme} />
+      <Navbar 
+        cartCount={cart.length} 
+        setIsCartOpen={setIsCartOpen} 
+        theme={theme} 
+        setTheme={setTheme} 
+        setSearchQuery={setSearchQuery}
+      />
       <Hero />
 
       <main className="main-container">
@@ -93,7 +109,7 @@ function App() {
           </div>
           {meta && !loading && !error && (
             <div className="results-count">
-              Showing <span className="highlight">{meta.currentPageItems}</span> of <span className="highlight">{meta.totalItems}</span> products
+              Showing <span className="highlight">{filteredProducts.length}</span> of <span className="highlight">{meta.totalItems}</span> products
             </div>
           )}
         </div>
@@ -129,9 +145,17 @@ function App() {
           </div>
         )}
 
-        {!loading && !error && (
+        {!loading && !error && filteredProducts.length === 0 && (
+          <div className="empty-cart" style={{ marginTop: '80px', marginBottom: '80px' }}>
+            <span style={{ fontSize: '3rem' }}>🔍</span>
+            <h3 style={{ marginTop: '16px', color: 'var(--text-main)' }}>No products found</h3>
+            <p style={{ marginTop: '8px' }}>We couldn't find any products matching your search.</p>
+          </div>
+        )}
+
+        {!loading && !error && filteredProducts.length > 0 && (
           <div className="products-grid">
-            {(selectedCategory === 'All' ? products : products.filter(p => p.category === selectedCategory)).map((product, index) => (
+            {filteredProducts.map((product, index) => (
               <ProductCard 
                 key={product.id} 
                 product={product} 

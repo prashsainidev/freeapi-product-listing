@@ -1,6 +1,16 @@
+import { useState, useRef, useEffect } from 'react';
 import { HomeIcon, SearchIcon, CartIcon, UserIcon, SunIcon, MoonIcon } from './icons/Icons';
 
-function Navbar({ cartCount, setIsCartOpen, theme, setTheme }) {
+function Navbar({ cartCount, setIsCartOpen, theme, setTheme, setSearchQuery }) {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchInputRef = useRef(null);
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
   return (
     <nav className="navbar">
       <div className="nav-container">
@@ -20,7 +30,23 @@ function Navbar({ cartCount, setIsCartOpen, theme, setTheme }) {
           <button className="action-btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>
-          <button className="action-btn"><SearchIcon /></button>
+          
+          <div className={`search-container ${isSearchOpen ? 'open' : ''}`}>
+            <input 
+              ref={searchInputRef}
+              type="text" 
+              className="search-input" 
+              placeholder="Search catalog..." 
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onBlur={(e) => {
+                if (e.target.value === '') setIsSearchOpen(false);
+              }}
+            />
+            <button className="action-btn search-btn" onClick={() => setIsSearchOpen(!isSearchOpen)}>
+              <SearchIcon />
+            </button>
+          </div>
+
           <button className="action-btn cart-btn" onClick={() => setIsCartOpen(true)}>
             <CartIcon />
             {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}

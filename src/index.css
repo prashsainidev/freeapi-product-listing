@@ -863,6 +863,15 @@ button {
   .nav-links {
     display: none;
   }
+
+  /* Hide other nav actions when search is active on mobile to save space */
+  .nav-actions.search-active > button {
+    display: none;
+  }
+
+  .search-container.open .search-input {
+    width: calc(100vw - 160px);
+  }
   
   .hero-title {
     font-size: 2.5rem;

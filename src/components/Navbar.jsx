@@ -26,7 +26,7 @@ function Navbar({ cartCount, setIsCartOpen, theme, setTheme, setSearchQuery }) {
           <button className="nav-link">Trending</button>
         </div>
 
-        <div className="nav-actions">
+        <div className={`nav-actions ${isSearchOpen ? 'search-active' : ''}`}>
           <button className="action-btn" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
             {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
           </button>

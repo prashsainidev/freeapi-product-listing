@@ -7,9 +7,9 @@
 
 That was fine for a beginner. But in 2026, a shopping interface needs to feel like a premium luxury experience. It needs seamless hover animations, glassmorphism navigation, dynamic image placeholders for missing API data, and a fully responsive grid that works flawlessly on any device.
 
-This is **AURA Premium Store**. Built for the MasterJi Web Dev Cohort 2026, using the FreeAPI Products endpoint.
+**Welcome to Part 6 of my FreeAPI Mastery Series.** This is **AURA Premium Store**, built using the FreeAPI Products endpoint.
 
-Here is exactly how I leveled up from a simple data-fetcher to a premium industry-standard e-commerce layout. Step by step.
+After five projects of mastering fetching, filtering, and pagination, it was time to build a fully interactive ecosystem. Here is exactly how I leveled up from a simple data-fetcher to a premium industry-standard e-commerce layout. Step by step.
 
 ---
 
